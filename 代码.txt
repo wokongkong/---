@@ -1,0 +1,18 @@
+from sklearn.neighbors import KNeighborsClassifier
+import  pandas as pd
+
+train = pd.read_csv('train.csv')
+text = pd.read_csv('test.csv')
+text_x = text.drop(['ID'], axis=1).values
+# train_x = train.iloc[:,1:-1]
+# train_y = train['CLASS']
+train_x = train.drop(['ID','CLASS'], axis=1).values
+train_y = train['CLASS'].values
+# print(train_x,train_y)
+knn = KNeighborsClassifier(n_neighbors=6)
+knn.fit(train_x,train_y)
+text_y = knn.predict(text_x)
+print(text_y)
+id_ = range(210,314)
+df = pd.DataFrame({'ID':id_,'CLASS':text_y})
+df.to_csv("baseline1.csv", index=False)
